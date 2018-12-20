@@ -64,38 +64,55 @@ function GenerateShips() {
 
 }
 //проверка пустоты занятость ячейки
-function ChechShip(x,y) {
-    if(gameBoard[x][y]==1){
-        return false;
+function ChechShip(x, y, size, hor) {
+    let result = false;
+    maxrows = rows - 1;
+    var anyBoxesChecked = [];
+    if (hor) {
+        //проверка на вместимость на координаты
+        if (y + size > maxrows) {
+            yy = y + size; // 
+            y = y - (yy - maxrows);
+        }
+        for (let i = 0; i < size; i++) {
+            var z= y+i;
+            if (gameBoard[x][z] == 0) {
+                anyBoxesChecked.push(true);
+            } else {
+                anyBoxesChecked.push(false);
+            }
+        }
+        result = anyBoxesChecked.every(elem => elem == true);
     }
-    else return true;
+    return result;
 }
 
 function Lincorn(range) {
-    
-    x=getRandomInt(0,rows-1);
-    y=getRandomInt(0,rows-1);
+
+    x = getRandomInt(0, rows - 1);
+    y = getRandomInt(0, rows - 1);
     var horizontal = Math.random() >= 0.5;
     //направление корабля
-    if (horizontal=true){
+    if (horizontal = true) {
         //отмека корабля на поле 
-        for (let index = 0; index < range; index++) {
-            let size=y+index; 
-            if(0<=size<=9){
-                if (ChechShip(x,size)){
-                    gameBoard[x][size]=1;
-                }
-            }
-            else{
-                
-            }
-            
-            
-        }   
-        if(y+1==10){
-            y=y-1
-            gameBoard[x][y]=1;
-        }
+        
+        // for (let index = 0; index < range; index++) {
+        //     let size=y+index; 
+        //     if(0<=size<=9){
+        //         if (ChechShip(x,size)){
+        //             gameBoard[x][size]=1;
+        //         }
+        //     }
+        //     else{
+
+        //     }
+
+
+        // }   
+        // if (y + 1 == 10) {
+        //     y = y - 1
+        //     gameBoard[x][y] = 1;
+        // }
     }
 
     if (range > 1) {
