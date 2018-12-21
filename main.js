@@ -273,7 +273,7 @@ function botclick() {
             yourBoard[x][y]=3;
             document.getElementById("p"+x+y).style.background="red";
         }else{
-            yourBoard[x][y]=3;
+            yourBoard[x][y]=3//смешная ситуация думал что придумал но нет. Необходимо вставить болеан переменную но ведь ее отмечу что дальше то 
             document.getElementById("p"+x+y).style.background="blue";
         }
         
