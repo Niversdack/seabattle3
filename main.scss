@@ -4,10 +4,13 @@ body {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
+    font-family: "Roboto", sans-serif;
 
 
 }
-
+.center{
+    font-size: 50px;
+}
 .player {
     display: flex;
     flex-direction: column;
@@ -29,7 +32,7 @@ body {
 
 .bot {
     .name {
-        .text {
+        text {
             color: #333;
             height: 27px;
             border: none;

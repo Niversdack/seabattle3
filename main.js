@@ -3,6 +3,8 @@ var cols = 10;
 var squareSize = 25;
 var gameBoardContainer = document.getElementById("board1");
 var yourBoardContainer = document.getElementById("board2");
+var person = prompt("Введите ваше имя", "Питер Паркер");
+document.getElementById("text").innerHTML=person;
 function CreteElmentsInBoard(container) {
   for (i = 0; i < cols; i++) {
     for (j = 0; j < rows; j++) {
@@ -204,7 +206,7 @@ function fireTorpedo(e) {
       //Счетчик до окончания игры
       hitCount++;
       if (hitCount == 20) {
-        alert(document.getElementsByClassName("text").innerHTML+" победил в этой игре!!!")
+        alert(document.getElementById("text").innerHTML+"победил в этой игре!!! Со счетом "+document.getElementById("hit").innerHTML+":"+document.getElementById("hit2").innerHTML+"  Нажмите ок для рестарта") ? "" : location.reload();
       }
     }
   }
@@ -229,7 +231,7 @@ function botclick() {
       document.getElementById("hit2").innerHTML = hits1;
       hitCount1++;
       if (hitCount1 == 20) {
-        alert(document.getElementsByClassName("text1").innerHTML+" победил в этой игре!!!")
+        alert("Компьютер победил в этой игре!!! Со счетом "+document.getElementById("hit2").innerHTML+":"+document.getElementById("hit").innerHTML+"  Нажмите ок для рестарта") ? "" : location.reload();
       }
     } else {
       yourBoard[x][y] = 3;
@@ -241,7 +243,7 @@ function botclick() {
     }
   } while (hit == true);
 }
-
+// Отображение ваших кораблей
 function Search() {
   CreteElmentsInBoard(gameBoardContainer);
   CreteElmentsInBoard(yourBoardContainer);
@@ -249,7 +251,8 @@ function Search() {
     for (let y = 0; y < yourBoard[x].length; y++) {
       const elem = yourBoard[x][y];
       if (elem == 1) {
-        document.getElementById("p" + x + y).style.background = "black";
+        document.getElementById("p" + x + y).style.background = "url(img/ship.svg) no-repeat center";
+        document.getElementById("p" + x + y).style.backgroundSize = "25px 25px";
       }
     }
   }

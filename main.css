@@ -9,6 +9,11 @@ body {
           flex-direction: row;
   -ms-flex-pack: distribute;
       justify-content: space-around;
+  font-family: "Roboto", sans-serif;
+}
+
+.center {
+  font-size: 50px;
 }
 
 .player {
@@ -45,7 +50,7 @@ body {
   color: gray;
 }
 
-.bot .name .text {
+.bot .name text {
   color: #333;
   height: 27px;
   border: none;
