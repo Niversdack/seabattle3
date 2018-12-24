@@ -65,13 +65,6 @@ h1 {
   height: 250px;
 }
 
-#board2 {
-  position: relative;
-  margin: 0 auto 2em auto;
-  width: 250px;
-  height: 250px;
-}
-
 #board1 div {
   position: absolute;
   -webkit-box-sizing: border-box;
@@ -86,6 +79,13 @@ h1 {
   height: 25px;
 }
 
+#board2 {
+  position: relative;
+  margin: 0 auto 2em auto;
+  width: 250px;
+  height: 250px;
+}
+
 #board2 div {
   position: absolute;
   -webkit-box-sizing: border-box;
@@ -98,5 +98,10 @@ h1 {
   border: 1px solid #ddd;
   width: 25px;
   height: 25px;
+}
+
+.shoot {
+  background-image: url(img/boom.svg);
+  background-size: 25px 25px;
 }
 /*# sourceMappingURL=main.css.map */

@@ -1,36 +1,29 @@
 var rows = 10;
 var cols = 10;
 var squareSize = 25;
-
-// get the container element
 var gameBoardContainer = document.getElementById("board1");
-
-// make the grid columns and rows
-for (i = 0; i < cols; i++) {
-  for (j = 0; j < rows; j++) {
-    // create a new div HTML element for each grid square and make it the right size
-    var square = document.createElement("div");
-    gameBoardContainer.appendChild(square);
-
-    // give each div element a unique id based on its row and column, like "s00"
-    square.id = "s" + j + i;
-
-    // set each grid square's coordinates: multiples of the current row or column number
-    var topPosition = j * squareSize;
-    var leftPosition = i * squareSize;
-
-    // use CSS absolute positioning to place each grid square on the page
-    square.style.top = topPosition + "px";
-    square.style.left = leftPosition + "px";
+var yourBoardContainer = document.getElementById("board2");
+function CreteElmentsInBoard(container) {
+  for (i = 0; i < cols; i++) {
+    for (j = 0; j < rows; j++) {
+      
+      var square = document.createElement("div");
+      container.appendChild(square);
+      if(container==gameBoardContainer){
+        square.id = "s" + j + i;
+      }else{
+        square.id = "p" + j + i;
+      }
+      var topPosition = j * squareSize;
+      var leftPosition = i * squareSize;
+      square.style.top = topPosition + "px";
+      square.style.left = leftPosition + "px";
+    }
   }
 }
 var hitCount = 0;
+var hitCount1 = 0;
 
-/* create the 2d array that will contain the status of each square on the board
-   and place ships on the board (later, create function for random placement!)
-
-   0 = empty, 1 = part of a ship, 2 = a sunken part of a ship, 3 = a missed shot
-*/
 var gameBoard = [
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -44,28 +37,6 @@ var gameBoard = [
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 ];
 
-var yourBoardContainer = document.getElementById("board2");
-
-// make the grid columns and rows
-for (i = 0; i < cols; i++) {
-  for (j = 0; j < rows; j++) {
-    // create a new div HTML element for each grid square and make it the right size
-    var square = document.createElement("div");
-    yourBoardContainer.appendChild(square);
-
-    // give each div element a unique id based on its row and column, like "s00"
-    square.id = "p" + j + i;
-
-    // set each grid square's coordinates: multiples of the current row or column number
-    var topPosition = j * squareSize;
-    var leftPosition = i * squareSize;
-
-    // use CSS absolute positioning to place each grid square on the page
-    square.style.top = topPosition + "px";
-    square.style.left = leftPosition + "px";
-  }
-}
-var hitCount = 0;
 var yourBoard = [
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -78,7 +49,6 @@ var yourBoard = [
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 ];
-
 //Генерация целого числа в определенном диапазоне
 function getRandomInt(min, max) {
   min = Math.ceil(min);
@@ -86,7 +56,7 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-//проверка пустоты - занятость ячейки
+//проверка пустоты - занятость ячейки. Так же размешение судна
 function CheckShip(x, y, size, hor, board) {
   let result = false;
   maxrows = rows - 1;
@@ -107,7 +77,6 @@ function CheckShip(x, y, size, hor, board) {
     }
 
     if (anyBoxesChecked.every(elem => elem == true)) {
-      //Разменщение кораблика
       for (let i = 0; i < size; i++) {
         var z = y + i;
         board[x][z] = 1;
@@ -117,6 +86,7 @@ function CheckShip(x, y, size, hor, board) {
       result = true;
     }
   } else {
+    //проверка на вместимость по координатам
     if (x + size > maxrows) {
       xx = x + size;
       x = x - (xx - maxrows);
@@ -141,7 +111,7 @@ function CheckShip(x, y, size, hor, board) {
   }
   return result;
 }
-
+//Создание краев корабля для корректной расстановки кораблей
 function CreateBorder(x, y, board) {
   if (x + 1 <= 9) {
     let xx = x + 1;
@@ -168,32 +138,33 @@ function CreateBorder(x, y, board) {
     }
   }
 }
-
+//Координаты и отправка на проверку вместимости корабля
 function Lincorn(range, board) {
   x = getRandomInt(0, rows - 1);
   y = getRandomInt(0, rows - 1);
   var horizontal = Math.random() >= 0.5;
   if (CheckShip(x, y, range, horizontal, board)) {
-    //console.log(x + "," + y + "," + range + "," + horizontal,board);
     return true;
   } else return false;
 }
 
 function GenerateShips(board) {
-  //Ставим линкорн
+  //Ставим линкорн 4 клетки
   PasteShip(1, 4, board);
-  //крейсеры
+  //крейсеры 3 клетки
   PasteShip(2, 3, board);
-  //эсминцы
+  //эсминцы 2 клетка
   PasteShip(3, 2, board);
-  //Лодочки
+  //Лодочки 1 клетка
   PasteShip(4, 1, board);
   return board;
 }
 GenerateShips(gameBoard);
 GenerateShips(yourBoard);
 gameBoardContainer.addEventListener("click", fireTorpedo, false);
-//yourBoardContainer.addEventListener("click",PcFire,false);
+Search();
+
+//Размещение корабля до 
 function PasteShip(amout, size, board) {
   let check = [];
   for (let i = 0; i < amout; i++) {
@@ -209,83 +180,76 @@ function fireTorpedo(e) {
   var hits = parseInt(document.getElementById("hit").innerHTML,10);  
 
   if (e.target !== e.currentTarget) {
-    // extract row and column # from the HTML element's id
+
     var row = e.target.id.substring(1, 2);
     var col = e.target.id.substring(2, 3);
-    //alert("Clicked on row " + row + ", col " + col);
 
-    // if player clicks a square with no ship, change the color and change square's value
+    //промахи
     if (gameBoard[row][col] == 0 || gameBoard[row][col] == 5) {
-      e.target.style.background = "#bbb";
+      e.target.style.background = "url(img/dot.svg) no-repeat center";
+      e.target.style.backgroundSize = "20px 20px";
       gameBoard[row][col] = 3;
       miss = parseInt(miss, 10) + 1;
       document.getElementById("miss").innerHTML = miss;
       botclick();
 
+      //попадания
     } else if (gameBoard[row][col] == 1) {
-      e.target.style.background = "red";
-      // set this square's value to 2 to indicate the ship has been hit
+      e.target.style.background = "url(img/boom.svg)";
+      e.target.style.backgroundSize = "25px 25px";
+      
       gameBoard[row][col] = 2;
       hits = parseInt(hits, 10) + 1;
       document.getElementById("hit").innerHTML = hits;
-      // increment hitCount each time a ship is hit
+      //Счетчик до окончания игры
       hitCount++;
-      // this definitely shouldn't be hard-coded, but here it is anyway. lazy, simple solution:
-      if (hitCount == 17) {
-
+      if (hitCount == 20) {
+        alert(document.getElementsByClassName("text").innerHTML+" победил в этой игре!!!")
       }
-
-      // if player clicks a square that's been previously hit, let them know
     }
   }
   e.stopPropagation();
 }
 
 function botclick() {
-
   do {
-
     var miss1 = parseInt(document.getElementById("miss2").innerHTML,10);
     var hits1 = parseInt(document.getElementById("hit2").innerHTML,10);
     do{
       x = getRandomInt(0, 9);
       y = getRandomInt(0, 9);
     }while(yourBoard[x][y] == 3)
-   
-    
     var hit;
     if (yourBoard[x][y] == 1) {
       yourBoard[x][y] = 3;
-      document.getElementById("p" + x + y).style.background = "red";
+      document.getElementById("p" + x + y).style.background = "url(img/boom.svg) no-repeat center";
+      document.getElementById("p" + x + y).style.backgroundSize = "25px 25px";
       hit = true;
-
       hits1 = parseInt(hits1, 10) + 1;
       document.getElementById("hit2").innerHTML = hits1;
+      hitCount1++;
+      if (hitCount1 == 20) {
+        alert(document.getElementsByClassName("text1").innerHTML+" победил в этой игре!!!")
+      }
     } else {
       yourBoard[x][y] = 3;
-      document.getElementById("p" + x + y).style.background = "blue";
+      document.getElementById("p" + x + y).style.background = "url(img/dot.svg) no-repeat center";
+      document.getElementById("p" + x + y).style.backgroundSize = "20px 20px";
       hit = false;
-
       miss1 = parseInt(miss1, 10) + 1;
       document.getElementById("miss2").innerHTML = miss1;
-
-
     }
-
   } while (hit == true);
-
 }
 
 function Search() {
-  //let sum=0;
+  CreteElmentsInBoard(gameBoardContainer);
+  CreteElmentsInBoard(yourBoardContainer);
   for (let x = 0; x < yourBoard.length; x++) {
     for (let y = 0; y < yourBoard[x].length; y++) {
       const elem = yourBoard[x][y];
-
       if (elem == 1) {
         document.getElementById("p" + x + y).style.background = "black";
-        //sum++;
-        //console.log(sum);
       }
     }
   }
